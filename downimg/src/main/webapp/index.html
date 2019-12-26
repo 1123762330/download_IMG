@@ -1,0 +1,51 @@
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<head>
+    <title>图片下载</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+<div class="container col-xs-2 col-xs-push-4">
+    <h1>图片下载</h1>
+    <label for="id">请在下面文本输入框中输入链接地址:</label>
+        <div class="form-group">
+            <input type="text" style="width:600px; height:60px;" id="id" name="id" placeholder="请粘贴图片链接或者ID">
+        </div>
+    <button type="submit" class="btn btn-default" id="btn">点击下载</button>
+</div>
+<div id="loading"></div>
+<p></p>
+<div style="font-size: 12px">文件默认存储路径:C:\down_images\images</div>
+<script>
+    //点击提交按钮请求后台数据
+    $('#btn').click(function(){
+        $.ajax({
+            url:  "/getPicture2?id="+$("#id").val(), //发送后台的url
+            type:'get', //请求方式
+            dataType:'json', //后台返回的数据类型
+            beforeSend:function(){
+                $("#loading").html("<img src='img/loading.gif' />"); //在请求后台数据之前显示loading图标
+            },
+            success:function(data){  //data为后台返回的数据
+                $("#loading").empty(); //ajax返回成功，清除loading图标
+                console.log(data);
+                if (data=='200'){
+                    alert("图片下载完成");
+                    window.document.location.href="index.html";
+                }else {
+                    alert("该图片合集已经下载过");
+                    window.document.location.href="index.html";
+                }
+
+            },
+            error:function () { //请求数据失败
+                $("#loading").empty(); //ajax返回成功，清除loading图标
+                alert("请求失败")
+            }
+        });
+    });
+</script>
+</body>
+</html>
